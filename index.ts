@@ -13,8 +13,7 @@ const User = model;
 const JWT_SECRET: any = process.env.JWT_SECRET;
 const port = process.env.PORT;
 // const Mongo_URI: any = process.env.MONGO_URI;
-MONGO_URI =
-  "mongodb+srv://eshunemma:eshunemma@www-church.a7tsqhs.mongodb.net/?retryWrites=true&w=majority";
+const MONGO_URI = "mongodb+srv://eshunemma:eshunemma@www-church.a7tsqhs.mongodb.net/?retryWrites=true&w=majority";
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
