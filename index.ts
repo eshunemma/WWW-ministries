@@ -12,8 +12,7 @@ dotenv.config();
 const User = model;
 const JWT_SECRET: any = process.env.JWT_SECRET;
 const port = process.env.PORT;
-// const Mongo_URI: any = process.env.MONGO_URI;
-const MONGO_URI = "mongodb+srv://eshunemma:eshunemma@www-church.a7tsqhs.mongodb.net/?retryWrites=true&w=majority";
+const MONGO_URI: any = process.env.MONGO_URI;
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
@@ -72,7 +71,7 @@ app.post("/forgot-password", async (req: Request, res: Response, next) => {
         expiresIn: "1m",
       }
     );
-    const link = `http://localhost:8000/reset-password/${existingUser._id}/${token}`;
+    const link = `https://wwwministries.onrender.com/reset-password/${existingUser._id}/${token}`;
     sendEmail(link, email, "Reset Password");
     // console.log(link);
     return res.status(200).send(`Link Send to your Email`);
@@ -140,7 +139,6 @@ app.post("/register", async (req: Request, res: Response, next) => {
       email,
       password: await hashPassword(password),
     });
-    console.log(response);
     res.status(200).json("User Created Succesfully");
   } catch (error: any) {
     if (error.code === 11000) {
@@ -149,10 +147,6 @@ app.post("/register", async (req: Request, res: Response, next) => {
     throw error.message;
   }
 });
-
-// app.listen(port, () => {
-//   console.log(`Server Listening to PORT ${port}`);
-// });
 
 mongoose
   .connect(MONGO_URI)
