@@ -16,7 +16,7 @@ export const sendEmail = (template: string, to: string, subject: string) => {
   });
 
   const mailOptions = {
-    from: `ARMS <${process.env.USER_EMAIL}>`,
+    from: `WorldWide Word Ministries <${process.env.USER_EMAIL}>`,
     to,
     subject,
     html: template,
