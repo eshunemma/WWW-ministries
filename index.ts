@@ -150,8 +150,14 @@ app.post("/register", async (req: Request, res: Response, next) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server Listening to PORT ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Server Listening to PORT ${port}`);
+// });
 
-mongoose.connect(Mongo_URI);
+mongoose.connect(Mongo_URI).then(() => {
+  console.log('Connected to MongoDB');
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
+})
+.catch((error) => console.error('Failed to connect to MongoDB:', error));
