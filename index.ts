@@ -12,8 +12,9 @@ dotenv.config();
 const User = model;
 const JWT_SECRET: any = process.env.JWT_SECRET;
 const port = process.env.PORT;
-const Mongo_URI: any = process.env.MONGO_URI;
-
+// const Mongo_URI: any = process.env.MONGO_URI;
+MONGO_URI =
+  "mongodb+srv://eshunemma:eshunemma@www-church.a7tsqhs.mongodb.net/?retryWrites=true&w=majority";
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
@@ -84,7 +85,7 @@ app.post("/forgot-password", async (req: Request, res: Response, next) => {
 app.post("/change-password", async (req: Request, res: Response, next) => {
   const { token, newpassword } = req.body;
   try {
-    const user:any = JWT.verify(token, JWT_SECRET);
+    const user: any = JWT.verify(token, JWT_SECRET);
     const _id = user.id;
     await User.updateOne(
       { _id },
@@ -154,10 +155,12 @@ app.post("/register", async (req: Request, res: Response, next) => {
 //   console.log(`Server Listening to PORT ${port}`);
 // });
 
-mongoose.connect(Mongo_URI).then(() => {
-  console.log('Connected to MongoDB');
-  app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-  });
-})
-.catch((error) => console.error('Failed to connect to MongoDB:', error));
+mongoose
+  .connect(Mongo_URI)
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(port, () => {
+      console.log(`Server running on port ${port}`);
+    });
+  })
+  .catch((error) => console.error("Failed to connect to MongoDB:", error));
