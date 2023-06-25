@@ -155,7 +155,7 @@ app.post("/register", async (req: Request, res: Response, next) => {
 // });
 
 mongoose
-  .connect(Mongo_URI)
+  .connect(MONGO_URI)
   .then(() => {
     console.log("Connected to MongoDB");
     app.listen(port, () => {
