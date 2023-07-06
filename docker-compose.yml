@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  backend: 
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: www_backend
+    container_name: www_backend_container
+    restart: on-failure
+    ports: 
+      - 8000:8000
