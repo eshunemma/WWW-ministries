@@ -4,6 +4,7 @@ import * as dotenv from "dotenv";
 import { model } from "../Models/user";
 import { comparePassword, hashPassword } from "../utils/hashPasswords";
 import { sendEmail } from "../utils/emailService";
+import { jwtGenerator } from "../utils/jwtGenerator";
 dotenv.config();
 
 const User = model;
@@ -21,10 +22,21 @@ export const registerUser = async (req: Request, res: Response) => {
       email,
       password: await hashPassword(password),
     });
-    res.status(200).json("User Created Succesfully");
+
+    console.log(response);
+
+    const token = await jwtGenerator(
+      response._id,
+      response.email,
+      response.role
+    );
+
+    res.status(200).json({ status: "User Created Succesfully", token: token });
   } catch (error: any) {
     if (error.code === 11000) {
-      return res.status(409).send("Email already in use");
+      return res
+        .status(409)
+        .json({ status: "Email already in use", token: null });
     }
     throw error.message;
   }
@@ -43,22 +55,17 @@ export const login = async (req: Request, res: Response) => {
   }
 
   if (await comparePassword(password, existance?.password)) {
-    const token = JWT.sign(
-      {
-        id: existance._id,
-        email: existance.email,
-      },
-      JWT_SECRET,
-      {
-        expiresIn: 22222,
-      }
+    const token = await jwtGenerator(
+      existance._id,
+      existance.email,
+      existance.role
     );
 
     return res.json({ status: "Login Successfully", token: token });
   } else {
     return res
       .status(503)
-      .json({ status: "error", data: "Invalid Credentials" });
+      .json({ status: "error", data: "Invalid Credentials", token: null });
   }
 };
 
