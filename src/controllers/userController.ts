@@ -82,8 +82,7 @@ export const changePassword = async (req: Request, res: Response) => {
     );
     res.status(200).json({ status: "Password Changed Successfully" });
   } catch (error) {
-    console.log(error);
-
+    // console.log(error);
     return res.status(409).json({ status: "error" });
   }
 };
@@ -109,7 +108,7 @@ export const forgetPassword = async (req: Request, res: Response) => {
         expiresIn: "5m",
       }
     );
-    const link = `https://wwwministries.onrender.com/user/reset-password/${existingUser._id}/${token}`;
+    const link = `https://wwwministries.onrender.com/user/reset-password/?id=${existingUser._id}/?token=${token}`;
     sendEmail(link, email, "Reset Password");
     // console.log(link);
     return res.status(200).send(`Link Send to your Mail`);
